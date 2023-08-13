@@ -77,7 +77,7 @@ const registrationApp = () => {
         };
     };
 
-    const getAlertMessage = () => {
+    const getAlertClassNames = () => {
         if (getMessages().errorMessage) return "alert alert-danger";
         else if (getMessages().successMessage) return "alert alert-success";
         else return "";
@@ -89,7 +89,7 @@ const registrationApp = () => {
         getMessages,
         setTownOrCustomRegNumber,
         getTownOrCustomRegNumber,
-        getAlertMessage,
+        getAlertClassNames,
     };
 };
 

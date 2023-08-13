@@ -79,4 +79,45 @@ describe("registrationApp", () => {
         assert.deepStrictEqual([], RegNumbersApp.getTownOrCustomRegNumber());
     });
 
+    // error messages, success messages
+
+    it("should be able to return 'Please enter a registration number.'", () => {
+        RegNumbersApp.setRegNumber("");
+
+        assert.equal("Please enter a registration number.", RegNumbersApp.getMessages().errorMessage);
+    });
+
+    it("should be able to return 'Please enter a valid registration number. eg. CA 563-464, CJ 536, CL 7733, Jolaksi CA, Tolokazi CJ.'", () => {
+        RegNumbersApp.setRegNumber("12453");
+
+        assert.equal("Please enter a valid registration number. eg. CA 563-464, CJ 536, CL 7733, Jolaksi CA, Tolokazi CJ.", RegNumbersApp.getMessages().errorMessage);
+    });
+
+    it("should be able to return 'Successfully added a registration number.'", () => {
+        RegNumbersApp.setRegNumber("Jolaski CA");
+
+        assert.equal("Successfully added a registration number.", RegNumbersApp.getMessages().successMessage);
+    });
+
+    it("should be able to return 'TOLO CL has already been entered.'", () => {
+        RegNumbersApp.setRegNumber("Tolo CL");
+        RegNumbersApp.setRegNumber("Tolo CL");
+
+        assert.equal("TOLO CL has already been entered.", RegNumbersApp.getMessages().errorMessage);
+    });
+
+    // alert classnames from bootstrap
+
+    it("should be able to return the class name 'alert alert-danger'", () => {
+        RegNumbersApp.setRegNumber("");
+
+        assert.equal("alert alert-danger", RegNumbersApp.getAlertClassNames());
+    });
+
+    it("should be able to return the class name 'alert alert-success'", () => {
+        RegNumbersApp.setRegNumber("CA 536");
+
+        assert.equal("alert alert-success", RegNumbersApp.getAlertClassNames());
+    });
+
 });
