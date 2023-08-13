@@ -14,9 +14,13 @@ const registrationApp = () => {
         if (!pattern && lowerCaseRegNum) {
             // error message
             errorMessage = "Please enter a valid registration number. eg. CA 563-464, CJ 536, CL 7733, Jolaksi CA, Tolokazi CJ.";
+            // success message
+            successMessage = "";
 
         } else if (!lowerCaseRegNum) {
             errorMessage = "Please enter a registration number.";
+            // success message
+            successMessage = "";
 
         } else if (pattern) {
             const regNumToBeShown = lstOfRegNums.find(obj => Object.keys(obj)[0] === lowerCaseRegNum);
@@ -27,6 +31,8 @@ const registrationApp = () => {
 
                 // error message
                 errorMessage = `${lowerCaseRegNum} has already been entered.`;
+                // success message
+                successMessage = "";
 
             } else if (!regNumToBeShown) {
                 // case where the registration number appears for the first time
@@ -36,6 +42,8 @@ const registrationApp = () => {
 
                 // success message
                 successMessage = "Successfully added a registration number.";
+                // set error message
+                errorMessage = "";
             };
         };
     };
@@ -58,9 +66,17 @@ const registrationApp = () => {
         });
     };
 
-    const getTownOrCustomRegNumber = () => townOrCustomRegNum;
+    const getTownOrCustomRegNumber = () => {
+        let registrationNumbers = [];
+        townOrCustomRegNum.forEach(regNumber => registrationNumbers = Object.keys(regNumber));
+        return registrationNumbers;
+    }
 
-    const getRegNumbers = () => lstOfRegNums;
+    const getRegNumbers = () => {
+        let registrationNumbers = [];
+        lstOfRegNums.forEach(regNumber => registrationNumbers = Object.keys(regNumber));
+        return registrationNumbers;
+    };
 
     const getMessages = () => {
         return {
