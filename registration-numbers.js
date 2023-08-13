@@ -77,12 +77,19 @@ const registrationApp = () => {
         };
     };
 
+    const getAlertMessage = () => {
+        if (getMessages().errorMessage) return "alert alert-danger";
+        else if (getMessages().successMessage) return "alert alert-success";
+        else return "";
+    };
+
     return {
         setRegNumber,
         getRegNumbers,
         getMessages,
         setTownOrCustomRegNumber,
         getTownOrCustomRegNumber,
+        getAlertMessage,
     };
 };
 
