@@ -17,13 +17,13 @@ describe("registrationApp", () => {
         // set registration number
         RegNumbersApp.setRegNumber("ca 662");
 
-        assert.deepStrictEqual(["CA 662"], RegNumbersApp.getRegNumbers());
+        assert.deepStrictEqual([{"CA 662" : 1}], RegNumbersApp.getRegNumbers());
     });
 
     it("should be able to set and get a valid customized registration number", () => {
         RegNumbersApp.setRegNumber("jolaksi CA");
 
-        assert.deepStrictEqual(["JOLAKSI CA"], RegNumbersApp.getRegNumbers());
+        assert.deepStrictEqual([{"JOLAKSI CA": 1}], RegNumbersApp.getRegNumbers());
     });
 
     it("should be able to update a registration number count", () => {
@@ -31,14 +31,14 @@ describe("registrationApp", () => {
         RegNumbersApp.setRegNumber("cj 552-232");
         RegNumbersApp.setRegNumber("cJ 552-232");
 
-        assert.deepStrictEqual(["CJ 552-232"], RegNumbersApp.getRegNumbers());
+        assert.deepStrictEqual([{"CJ 552-232" : 2}], RegNumbersApp.getRegNumbers());
     });
 
     it("should be able to update a customized registration number", () => {
         RegNumbersApp.setRegNumber("jolaksi CA");
         RegNumbersApp.setRegNumber("Jolaksi CA");
 
-        assert.deepStrictEqual(["JOLAKSI CA"], RegNumbersApp.getRegNumbers());
+        assert.deepStrictEqual([{"JOLAKSI CA": 2}], RegNumbersApp.getRegNumbers());
     });
 
     // filtering registration numbers
@@ -49,7 +49,7 @@ describe("registrationApp", () => {
         
         RegNumbersApp.setTownOrCustomRegNumber("CA");
 
-        assert.deepStrictEqual(["CA 662"], RegNumbersApp.getTownOrCustomRegNumber());
+        assert.deepStrictEqual([{"CA 662" : 1}], RegNumbersApp.getTownOrCustomRegNumber());
     });
 
     it("should be able to filter for CJ registration numbers", () => {
@@ -58,7 +58,7 @@ describe("registrationApp", () => {
         
         RegNumbersApp.setTownOrCustomRegNumber("CJ");
 
-        assert.deepStrictEqual(["CJ 223"], RegNumbersApp.getTownOrCustomRegNumber());
+        assert.deepStrictEqual([{"CJ 223" : 1}], RegNumbersApp.getTownOrCustomRegNumber());
     });
 
     it("should be able to filter for customized registration number", () => {
@@ -67,7 +67,7 @@ describe("registrationApp", () => {
         
         RegNumbersApp.setTownOrCustomRegNumber(null, "custom");
 
-        assert.deepStrictEqual(["JOLAKSI CA"], RegNumbersApp.getTownOrCustomRegNumber());
+        assert.deepStrictEqual([{"JOLAKSI CA" : 1}], RegNumbersApp.getTownOrCustomRegNumber());
     });
 
     it("should return an empty array when filtering for town that contains no registration numbers", () => {
