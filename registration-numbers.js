@@ -5,6 +5,7 @@ const registrationApp = () => {
     let errorMessage = "";
     let successMessage = "";
     let townOrCustomRegNum = [];
+    let filteredRegNum = "";
 
     const setRegNumber = userRegNum => {
         const lowerCaseRegNum = userRegNum.toUpperCase().trim();
@@ -47,6 +48,7 @@ const registrationApp = () => {
     const setTownOrCustomRegNumber = (town) => {
         lstOfRegNums.forEach(regNumber => {
             if (town !== 'Custom' && regNumber.startsWith(town)) {
+                filteredRegNum = town;
                 townOrCustomRegNum.push(regNumber);
             };
 
@@ -58,9 +60,20 @@ const registrationApp = () => {
         });
     };
 
-    const getTownOrCustomRegNumber = () => townOrCustomRegNum;
+    const getRegNumbers = () => {
+        if (townOrCustomRegNum.length > 0) {
+            let regNumbers = [];
+            townOrCustomRegNum.forEach(regNumber => {
+                if (regNumber.startsWith(filteredRegNum)) regNumbers.push(regNumber);
 
-    const getRegNumbers = () => lstOfRegNums;
+                if (!regNumber.startsWith(filteredRegNum)) regNumbers.push(regNumber);
+            });
+            return regNumbers;
+
+        } else {
+            return lstOfRegNums;
+        };
+    };
 
     const getMessages = () => {
         return {
@@ -87,7 +100,6 @@ const registrationApp = () => {
         getRegNumbers,
         getMessages,
         setTownOrCustomRegNumber,
-        getTownOrCustomRegNumber,
         getAlertClassNames,
         resetApp,
     };
