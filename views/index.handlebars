@@ -7,16 +7,26 @@
         <h2>Mbhaliso Numbers App</h1>
 
         <div class="regContainer">
-            <label for="regNumberInput">Enter registration number:</label>
-            <input type="text" name="regNumberInput" id="regNum">
-            <button type="submit" id="addButton">Add</button>
+
+            <form action="/sendRegNumber" method="post">
+                <label for="regNumberInput">Enter registration number:</label>
+                <input type="text" name="regNumberInput" id="regNum">
+                <button type="submit" id="addButton">Add</button>
+            </form>
+            <button type="submit" id="resetButton">Reset</button>
         </div>
 
     </main>
 
     <div class="displayRegNum">
         <h3>Entered Registration Numbers:</h2>
-        <div class="regNumbers"></div>
+        {{#each registrationNumbers}}
+        <div class="regNumbers">
+            <ul>
+                <li>{{this}}</li>
+            </ul>
+        </div>
+        {{/each}}
     </div>
 
     <footer>mthunzitom@gmail.com</footer>

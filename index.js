@@ -2,9 +2,11 @@
 import express from "express";
 import exphbs from "express-handlebars";
 import bodyParser from "body-parser";
+import registrationApp from "./registration-numbers.js"
 
 // instances
 const app = express();
+const registrationsApp = registrationApp();
 
 app.use(express.static("public"));
 
@@ -23,10 +25,30 @@ app.engine("handlebars", handlebarSetup);
 app.set("view engine", "handlebars");
 app.set("views", "./views");
 
-// ROUTES;
+
+// functions
+
+// created this function just in case I will need it later on
+const getRegistrationNumbers = (regArray) => {
+    let cloneRegNumbersArray = []
+    regArray.forEach(regNumber => {
+        cloneRegNumbersArray = Object.keys(regNumber);
+    });
+    return cloneRegNumbersArray;
+}
+
+// ROUTES
 
 app.get("/", (req, res) => {
-    res.render("index");
+    res.render("index", {
+        registrationNumbers: getRegistrationNumbers(registrationsApp.getRegNumbers())
+    });
+});
+
+app.post("/sendRegNumber", (req, res) => {
+    const regNumberInput = req.body.regNumberInput;
+    registrationsApp.setRegNumber(regNumberInput);
+    res.redirect("/");
 });
 
 const PORT = process.env.PORT || 3007;
