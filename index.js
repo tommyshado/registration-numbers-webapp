@@ -32,7 +32,7 @@ app.set("views", "./views");
 const getRegistrationNumbers = (regArray) => {
     let cloneRegNumbersArray = []
     regArray.forEach(regNumber => {
-        cloneRegNumbersArray = Object.keys(regNumber);
+        cloneRegNumbersArray.push(Object.keys(regNumber));
     });
     return cloneRegNumbersArray;
 }
@@ -40,6 +40,7 @@ const getRegistrationNumbers = (regArray) => {
 // ROUTES
 
 app.get("/", (req, res) => {
+    console.log(registrationsApp.getRegNumbers());
     res.render("index", {
         registrationNumbers: getRegistrationNumbers(registrationsApp.getRegNumbers()),
         messages: registrationsApp.getMessages(),
