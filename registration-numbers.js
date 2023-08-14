@@ -23,22 +23,18 @@ const registrationApp = () => {
             successMessage = "";
 
         } else if (pattern) {
-            const regNumToBeShown = lstOfRegNums.find(obj => Object.keys(obj)[0] === lowerCaseRegNum);
 
-            if (regNumToBeShown) {
-                // case where registration number is already in the lstOfRegNums array
-                regNumToBeShown[lowerCaseRegNum]++;
-
+            if (lstOfRegNums.includes(lowerCaseRegNum)) {
                 // error message
                 errorMessage = `${lowerCaseRegNum} has already been entered.`;
                 // success message
                 successMessage = "";
 
-            } else if (!regNumToBeShown) {
+                return;
+
+            } else if (!lstOfRegNums.includes(lowerCaseRegNum)) {
                 // case where the registration number appears for the first time
-                lstOfRegNums.push({
-                    [lowerCaseRegNum]: 1
-                });
+                lstOfRegNums.push(lowerCaseRegNum);
 
                 // success message
                 successMessage = "Successfully added a registration number.";
@@ -48,21 +44,17 @@ const registrationApp = () => {
         };
     };
 
-    const setTownOrCustomRegNumber = (town, custom) => {
-        lstOfRegNums.forEach(regNumObj => {
-            const registrationNumbers = Object.keys(regNumObj);
+    const setTownOrCustomRegNumber = (town) => {
+        lstOfRegNums.forEach(regNumber => {
+            if (town !== 'Custom' && regNumber.startsWith(town)) {
+                townOrCustomRegNum.push(regNumber);
+            };
 
-            registrationNumbers.forEach(regNumber => {
-                if (regNumber.startsWith(town)) {
-                    townOrCustomRegNum.push(regNumObj);
+            if (town === "Custom") {
+                if (regNumber.endsWith("CA") || regNumber.endsWith("CL") || regNumber.endsWith("CJ")) {
+                    townOrCustomRegNum.push(regNumber);
                 };
-
-                if (custom) {
-                    if (regNumber.endsWith("CA") || regNumber.endsWith("CL") || regNumber.endsWith("CJ")) {
-                        townOrCustomRegNum.push(regNumObj);
-                    };
-                };
-            });
+            };
         });
     };
 

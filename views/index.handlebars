@@ -21,6 +21,36 @@
             <form action="/reset" method="post">
                 <button type="submit" id="resetButton" onclick="(resetOnClick())">Reset</button>
             </form>
+
+            <form action="/filter" method="post">
+
+                <div class="filterContainer">
+
+                    <label class="">
+                        <input type="radio" name="regNumber" value="CA" class="radioButton">
+                        <strong><span class="label-body">Cape Town(ca)</span></strong>
+                    </label>
+
+                    <label class="">
+                        <input type="radio" name="regNumber" value="CL" class="radioButton">
+                        <strong><span class="label-body">STELLENBOSCH(cl)</span></strong>
+                    </label>
+
+                    <label class="">
+                        <input type="radio" name="regNumber" value="CJ" class="radioButton">
+                        <strong><span class="label-body">PAARL(cj)</span></strong>
+                    </label>
+
+                    <label class="">
+                        <input type="radio" name="regNumber" value="Custom" class="billItemTypeWithSettings">
+                        <strong><span class="label-body">Customize(endwith ca, cj, cl)</span></strong>
+                    </label>
+
+                    <button type="submit" id="showButton">Show</button>
+                </div>
+
+            </form>
+            
         </div>
 
     </main>
@@ -29,11 +59,11 @@
         <h3>Entered Registration Numbers:</h2>
 
         {{#each registrationNumbers}}
-        <div class="regNumbers">
-            <ul>
-                <li id="regNumberPlate">{{this}}</li>
-            </ul>
-        </div>
+            <div class="regNumbers">
+                <ul>
+                    <li id="regNumberPlate">{{this}}</li>
+                </ul>
+            </div>
         {{/each}}
 
     </div>
@@ -48,7 +78,7 @@
         if (messages) {
             messages.style.display = "none";
         };
-    }, 5000);
+    }, 3000);
 
     function resetOnClick() {
         return confirm("Are you sure you want to delete the data?");

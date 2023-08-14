@@ -25,24 +25,11 @@ app.engine("handlebars", handlebarSetup);
 app.set("view engine", "handlebars");
 app.set("views", "./views");
 
-
-// functions
-
-// created this function just in case I will need it later on
-const getRegistrationNumbers = (regArray) => {
-    let cloneRegNumbersArray = []
-    regArray.forEach(regNumber => {
-        cloneRegNumbersArray.push(Object.keys(regNumber));
-    });
-    return cloneRegNumbersArray;
-}
-
 // ROUTES
 
 app.get("/", (req, res) => {
-    console.log(registrationsApp.getRegNumbers());
     res.render("index", {
-        registrationNumbers: getRegistrationNumbers(registrationsApp.getRegNumbers()),
+        registrationNumbers: registrationsApp.getRegNumbers(),
         messages: registrationsApp.getMessages(),
         alertClassNames: registrationsApp.getAlertClassNames(),
     });
@@ -56,6 +43,12 @@ app.post("/sendRegNumber", (req, res) => {
 
 app.post("/reset", (req, res) => {
     registrationsApp.resetApp();
+    res.redirect("/");
+});
+
+app.post("/filter", (req, res) => {
+    const townOrCustomRegNum = req.body.regNumber;
+    registrationsApp.setTownOrCustomRegNumber(townOrCustomRegNum);
     res.redirect("/");
 });
 
