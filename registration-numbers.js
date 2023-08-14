@@ -1,7 +1,7 @@
 // CODE below:
 
 const registrationApp = () => {
-    const lstOfRegNums = [];
+    let lstOfRegNums = [];
     let errorMessage = "";
     let successMessage = "";
     let townOrCustomRegNum = [];
@@ -83,6 +83,13 @@ const registrationApp = () => {
         else return "";
     };
 
+    const resetApp = () => {
+        errorMessage = "";
+        successMessage = "";
+        lstOfRegNums = [];
+        townOrCustomRegNum = [];
+    };
+
     return {
         setRegNumber,
         getRegNumbers,
@@ -90,6 +97,7 @@ const registrationApp = () => {
         setTownOrCustomRegNumber,
         getTownOrCustomRegNumber,
         getAlertClassNames,
+        resetApp,
     };
 };
 

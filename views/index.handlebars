@@ -6,6 +6,10 @@
     <main class="enterRegNum">
         <h2>Mbhaliso Numbers App</h1>
 
+        <div class="messages {{alertClassNames}}">{{#if messages.errorMessage}}{{messages.errorMessage}}{{/if}}
+                                                  {{#if messages.successMessage}}{{messages.successMessage}}{{/if}}
+                                                </div>
+
         <div class="regContainer">
 
             <form action="/sendRegNumber" method="post">
@@ -13,22 +17,40 @@
                 <input type="text" name="regNumberInput" id="regNum">
                 <button type="submit" id="addButton">Add</button>
             </form>
-            <button type="submit" id="resetButton">Reset</button>
+
+            <form action="/reset" method="post">
+                <button type="submit" id="resetButton" onclick="(resetOnClick())">Reset</button>
+            </form>
         </div>
 
     </main>
 
     <div class="displayRegNum">
         <h3>Entered Registration Numbers:</h2>
+
         {{#each registrationNumbers}}
         <div class="regNumbers">
             <ul>
-                <li>{{this}}</li>
+                <li id="regNumberPlate">{{this}}</li>
             </ul>
         </div>
         {{/each}}
+
     </div>
 
     <footer>mthunzitom@gmail.com</footer>
 
 </div>
+
+<script>
+    setTimeout(function() {
+        const messages = document.querySelector(".messages");
+        if (messages) {
+            messages.style.display = "none";
+        };
+    }, 5000);
+
+    function resetOnClick() {
+        return confirm("Are you sure you want to delete the data?");
+    }
+</script>

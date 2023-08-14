@@ -1,6 +1,7 @@
 :root {
     --main-radius:5px;
     --main-padding:5px;
+    --main-margin:2.5px;
 }
 
 .container {
@@ -47,6 +48,17 @@ nav {
     grid-area: displayRegNum;
     border-radius: var(--main-radius);
     padding-top: var(--main-padding);
+    text-align: center;
+}
+
+#regNumberPlate {
+    list-style-type: none;
+    border-radius: 1rem;
+    padding: 2em;
+    margin: 2em;
+    background-color: #6C757D;
+    border: 2px solid #E9ECEF;
+    width: 25%;
 }
 
 footer {

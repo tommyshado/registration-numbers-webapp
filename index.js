@@ -41,13 +41,20 @@ const getRegistrationNumbers = (regArray) => {
 
 app.get("/", (req, res) => {
     res.render("index", {
-        registrationNumbers: getRegistrationNumbers(registrationsApp.getRegNumbers())
+        registrationNumbers: getRegistrationNumbers(registrationsApp.getRegNumbers()),
+        messages: registrationsApp.getMessages(),
+        alertClassNames: registrationsApp.getAlertClassNames(),
     });
 });
 
 app.post("/sendRegNumber", (req, res) => {
     const regNumberInput = req.body.regNumberInput;
     registrationsApp.setRegNumber(regNumberInput);
+    res.redirect("/");
+});
+
+app.post("/reset", (req, res) => {
+    registrationsApp.resetApp();
     res.redirect("/");
 });
 
