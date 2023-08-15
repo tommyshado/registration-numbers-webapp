@@ -10,8 +10,8 @@ const registrationApp = () => {
 
     const setRegNumber = userRegNum => {
         const lowerCaseRegNum = userRegNum.toUpperCase().trim();
-        let pattern = (/^C[AJL]( |)(\d{3,6}|\d{1,5}(-| )\d{1,5})$/).test(lowerCaseRegNum) || 
-                      (/^(.{3,8})[-\s](CA|CL|CJ)$/).test(lowerCaseRegNum); // pattern for custom registration number;
+        let pattern = (/^C[AJL]( |)(\d{3,6}|\d{1,5}(-| )\d{1,5})$/).test(lowerCaseRegNum); // || 
+                      //(/^(.{3,8})[-\s](CA|CL|CJ)$/).test(lowerCaseRegNum); // pattern for custom registration number;
 
         if (!pattern && lowerCaseRegNum) {
             // error message
