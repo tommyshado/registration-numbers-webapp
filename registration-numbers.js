@@ -63,7 +63,7 @@ const registrationApp = () => {
         });
     };
 
-    const lstOfRegNumbers = () => {
+    const getRegNumbers = () => {
         if (townOrCustomRegNum.length > 0) {
             return townOrCustomRegNum.filter((regNumber) => regNumber.startsWith(filteredRegNumber) || regNumber.endsWith(filteredRegNumber));
         }
@@ -94,7 +94,7 @@ const registrationApp = () => {
         setRegNumber,
         getMessages,
         setTownOrCustomRegNumber,
-        lstOfRegNumbers,
+        getRegNumbers,
         getAlertClassNames,
         resetApp,
     };

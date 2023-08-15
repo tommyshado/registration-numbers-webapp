@@ -29,7 +29,7 @@ app.set("views", "./views");
 
 app.get("/", (req, res) => {
     res.render("index", {
-        registrationNumbers: registrationsApp.lstOfRegNumbers(),
+        registrationNumbers: registrationsApp.getRegNumbers(),
         messages: registrationsApp.getMessages(),
         alertClassNames: registrationsApp.getAlertClassNames(),
     });
