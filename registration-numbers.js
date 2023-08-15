@@ -15,7 +15,7 @@ const registrationApp = () => {
 
         if (!pattern && lowerCaseRegNum) {
             // error message
-            errorMessage = "Please enter a valid registration number. eg. CA 563-464, CJ 536, CL 7733, Jolaksi CA, Tolokazi CJ.";
+            errorMessage = "Please enter a valid registration number. eg. CA 563-464, CJ 536, CL 7733.";
             // success message
             successMessage = "";
 
