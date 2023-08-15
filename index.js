@@ -3,6 +3,7 @@ import express from "express";
 import exphbs from "express-handlebars";
 import bodyParser from "body-parser";
 import registrationApp from "./registration-numbers.js"
+import routes from "./routes/routes.js";
 
 // instances
 const app = express();
@@ -27,30 +28,16 @@ app.set("views", "./views");
 
 // ROUTES
 
-app.get("/", (req, res) => {
-    res.render("index", {
-        registrationNumbers: registrationsApp.getRegNumbers(),
-        messages: registrationsApp.getMessages(),
-        alertClassNames: registrationsApp.getAlertClassNames(),
-    });
-});
+// instance
+const Routes = routes(registrationsApp);
 
-app.post("/sendRegNumber", (req, res) => {
-    const regNumberInput = req.body.regNumberInput;
-    registrationsApp.setRegNumber(regNumberInput);
-    res.redirect("/");
-});
+app.get("/", Routes.homeRoute);
 
-app.post("/reset", (req, res) => {
-    registrationsApp.resetApp();
-    res.redirect("/");
-});
+app.post("/sendRegNumber", Routes.sendRegistrationNumber);
 
-app.post("/filter", (req, res) => {
-    const townOrCustomRegNum = req.body.regNumber;
-    registrationsApp.setTownOrCustomRegNumber(townOrCustomRegNum);
-    res.redirect("/");
-});
+app.post("/reset",Routes.resetRoute);
+
+app.post("/filter", Routes.filterRoute);
 
 const PORT = process.env.PORT || 3007;
 
