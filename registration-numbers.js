@@ -49,25 +49,26 @@ const registrationApp = () => {
 
     const setTownOrCustomRegNumber = (town) => {
         if (townOrCustomRegNum.length > 0) townOrCustomRegNum = [];
+        filteredRegNumber = town;
         lstOfRegNums.forEach(regNumber => {
-            if (town !== 'Custom' && regNumber.startsWith(town)) {
-                filteredRegNumber = town;
+            if (regNumber.startsWith(town)) { // town !== 'Custom' && 
                 townOrCustomRegNum.push(regNumber);
             };
 
-            if (town === "Custom") {
-                if (regNumber.endsWith("CA") || regNumber.endsWith("CL") || regNumber.endsWith("CJ")) {
-                    townOrCustomRegNum.push(regNumber);
-                };
-            };
+            // if (town === "Custom") {
+            //     if (regNumber.endsWith("CA") || regNumber.endsWith("CL") || regNumber.endsWith("CJ")) {
+            //         townOrCustomRegNum.push(regNumber);
+            //     };
+            // };
         });
     };
 
     const getRegNumbers = () => {
-        if (townOrCustomRegNum.length > 0) {
-            return townOrCustomRegNum.filter((regNumber) => regNumber.startsWith(filteredRegNumber) || regNumber.endsWith(filteredRegNumber));
-        }
-        else return lstOfRegNums;
+        if (!filteredRegNumber) return lstOfRegNums;
+
+        const filtered = townOrCustomRegNum.filter((regNumber) => regNumber.startsWith(filteredRegNumber)); //  || regNumber.endsWith(filteredRegNumber)
+        if (filtered) return filtered;
+
     };
 
     const getMessages = () => {
