@@ -16,7 +16,7 @@ const routes = registrationAppLogic => {
 
     const filterRoute = (req, res) => {
         const townOrCustomRegNum = req.body.regNumber;
-        registrationAppLogic.setTownOrCustomRegNumber(townOrCustomRegNum);
+        registrationAppLogic.setTownRegNumber(townOrCustomRegNum);
         res.redirect("/");
     };
 

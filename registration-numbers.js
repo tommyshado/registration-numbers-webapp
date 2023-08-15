@@ -2,7 +2,7 @@
 
 const registrationApp = () => {
     let lstOfRegNums = [];
-    let townOrCustomRegNum = [];
+    let regNumberForTown = [];
 
     let errorMessage = "";
     let successMessage = "";
@@ -46,12 +46,13 @@ const registrationApp = () => {
     };
 
 
-    const setTownOrCustomRegNumber = (town) => {
-        if (townOrCustomRegNum.length > 0) townOrCustomRegNum = [];
+    const setTownRegNumber = (town) => {
+        if (regNumberForTown.length > 0) regNumberForTown = [];
         filteredRegNumber = town;
+
         lstOfRegNums.forEach(regNumber => {
             if (regNumber.startsWith(town)) {
-                townOrCustomRegNum.push(regNumber);
+                regNumberForTown.push(regNumber);
             };
         });
     };
@@ -59,7 +60,7 @@ const registrationApp = () => {
     const getRegNumbers = () => {
         if (!filteredRegNumber) return lstOfRegNums;
 
-        const filtered = townOrCustomRegNum.filter((regNumber) => regNumber.startsWith(filteredRegNumber));
+        const filtered = regNumberForTown.filter((regNumber) => regNumber.startsWith(filteredRegNumber));
         if (filtered) return filtered;
 
     };
@@ -81,13 +82,13 @@ const registrationApp = () => {
         errorMessage = "";
         successMessage = "";
         lstOfRegNums = [];
-        townOrCustomRegNum = [];
+        regNumberForTown = [];
     };
 
     return {
         setRegNumber,
         getMessages,
-        setTownOrCustomRegNumber,
+        setTownRegNumber,
         getRegNumbers,
         getAlertClassNames,
         resetApp,

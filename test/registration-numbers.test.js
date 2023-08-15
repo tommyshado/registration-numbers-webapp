@@ -34,7 +34,7 @@ describe("registrationApp", () => {
         RegNumbersApp.setRegNumber("ca 662");
         RegNumbersApp.setRegNumber("cl 553");
         
-        RegNumbersApp.setTownOrCustomRegNumber("CA");
+        RegNumbersApp.setTownRegNumber("CA");
 
         assert.deepStrictEqual(["CA 662"], RegNumbersApp.getRegNumbers());
     });
@@ -43,7 +43,7 @@ describe("registrationApp", () => {
         RegNumbersApp.setRegNumber("cj 223");
         RegNumbersApp.setRegNumber("ca 039-536");
         
-        RegNumbersApp.setTownOrCustomRegNumber("CJ");
+        RegNumbersApp.setTownRegNumber("CJ");
 
         assert.deepStrictEqual(["CJ 223"], RegNumbersApp.getRegNumbers());
     });
@@ -52,7 +52,7 @@ describe("registrationApp", () => {
         RegNumbersApp.setRegNumber("ca 662");
         RegNumbersApp.setRegNumber("cl 553");
         
-        RegNumbersApp.setTownOrCustomRegNumber("CJ");
+        RegNumbersApp.setTownRegNumber("CJ");
 
         assert.deepStrictEqual([], RegNumbersApp.getRegNumbers());
     });
