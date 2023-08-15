@@ -4,10 +4,31 @@ import exphbs from "express-handlebars";
 import bodyParser from "body-parser";
 import registrationApp from "./registration-numbers.js"
 import routes from "./routes/routes.js";
+import pgPromise from "pg-promise";
+import "dotenv/config";
 
 // instances
 const app = express();
-const registrationsApp = registrationApp();
+const pgp = pgPromise();
+
+
+const databaseURL = process.env.DB_LINK;
+
+
+const config = {
+    connectionString: databaseURL
+}
+
+if (process.env.NODE_ENV === "production") {
+    config.ssl = {
+        rejectUnauthorized: false
+    }
+}
+
+const database = pgp(config);
+
+// instance for logic
+const registrationsApp = registrationApp(database);
 
 app.use(express.static("public"));
 
