@@ -10,8 +10,7 @@ const registrationApp = () => {
 
     const setRegNumber = userRegNum => {
         const lowerCaseRegNum = userRegNum.toUpperCase().trim();
-        let pattern = (/^C[AJL]( |)(\d{3,6}|\d{1,5}(-| )\d{1,5})$/).test(lowerCaseRegNum); // || 
-                      //(/^(.{3,8})[-\s](CA|CL|CJ)$/).test(lowerCaseRegNum); // pattern for custom registration number;
+        let pattern = (/^C[AJL]( |)(\d{3,6}|\d{1,5}(-| )\d{1,5})$/).test(lowerCaseRegNum);
 
         if (!pattern && lowerCaseRegNum) {
             // error message
@@ -51,22 +50,16 @@ const registrationApp = () => {
         if (townOrCustomRegNum.length > 0) townOrCustomRegNum = [];
         filteredRegNumber = town;
         lstOfRegNums.forEach(regNumber => {
-            if (regNumber.startsWith(town)) { // town !== 'Custom' && 
+            if (regNumber.startsWith(town)) {
                 townOrCustomRegNum.push(regNumber);
             };
-
-            // if (town === "Custom") {
-            //     if (regNumber.endsWith("CA") || regNumber.endsWith("CL") || regNumber.endsWith("CJ")) {
-            //         townOrCustomRegNum.push(regNumber);
-            //     };
-            // };
         });
     };
 
     const getRegNumbers = () => {
         if (!filteredRegNumber) return lstOfRegNums;
 
-        const filtered = townOrCustomRegNum.filter((regNumber) => regNumber.startsWith(filteredRegNumber)); //  || regNumber.endsWith(filteredRegNumber)
+        const filtered = townOrCustomRegNum.filter((regNumber) => regNumber.startsWith(filteredRegNumber));
         if (filtered) return filtered;
 
     };
