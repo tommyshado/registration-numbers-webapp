@@ -1,7 +1,6 @@
 const routes = registrationAppLogic => {
 
     const homeRoute = async (req, res) => {
-        console.log(await registrationAppLogic.getRegNumbers());
         res.render("index", {
             registrationNumbers: await registrationAppLogic.getRegNumbers(),
             messages: registrationAppLogic.getMessages(),
@@ -21,8 +20,8 @@ const routes = registrationAppLogic => {
         res.redirect("/");
     };
 
-    const resetRoute = (req, res) => {
-        registrationAppLogic.resetApp();
+    const resetRoute = async (req, res) => {
+        await registrationAppLogic.resetApp();
         res.redirect("/");
     };
 

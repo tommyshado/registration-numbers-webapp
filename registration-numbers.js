@@ -1,9 +1,7 @@
 // CODE below:
 
 const registrationApp = (database) => {
-    let lstOfRegNums = [];
     let regNumberForTown = [];
-
     let errorMessage = "";
     let successMessage = "";
     let filteredRegNumber = "";
@@ -46,19 +44,25 @@ const registrationApp = (database) => {
         };
     };
 
+    const setTownRegNumber = async town => {
+        const regNumberCol = await database.any("SELECT reg_number FROM registration_numbers.user_reg_number");
 
-    const setTownRegNumber = (town) => {
-        if (regNumberForTown.length > 0) regNumberForTown = [];
+        if (regNumberForTown) regNumberForTown = [];
         filteredRegNumber = town;
+        successMessage = "";
+        errorMessage = "";
 
-        lstOfRegNums.forEach(regNumber => {
-            if (regNumber.startsWith(town)) {
-                regNumberForTown.push(regNumber);
+        regNumberCol.forEach(regNumberObj => {
+            if ((regNumberObj.reg_number).startsWith(town)) {
+                regNumberForTown.push(regNumberObj);
             };
         });
     };
 
-    const getRegNumbers = async () => await database.any("SELECT reg_number FROM registration_numbers.user_reg_number");
+    const getRegNumbers = async () => {
+        if (filteredRegNumber) return regNumberForTown.filter(regNumber => regNumber.reg_number.startsWith(filteredRegNumber));
+        else return await database.any("SELECT reg_number FROM registration_numbers.user_reg_number");
+    };
 
     const getMessages = () => {
         return {
@@ -73,11 +77,11 @@ const registrationApp = (database) => {
         else return "";
     };
 
-    const resetApp = () => {
+    const resetApp = async () => {
         errorMessage = "";
         successMessage = "";
-        lstOfRegNums = [];
         regNumberForTown = [];
+        await database.any("DELETE FROM registration_numbers.user_reg_number");
     };
 
     return {
