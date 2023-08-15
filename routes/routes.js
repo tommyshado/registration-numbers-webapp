@@ -1,16 +1,17 @@
 const routes = registrationAppLogic => {
 
-    const homeRoute = (req, res) => {
+    const homeRoute = async (req, res) => {
+        console.log(await registrationAppLogic.getRegNumbers());
         res.render("index", {
-            registrationNumbers: registrationAppLogic.getRegNumbers(),
+            registrationNumbers: await registrationAppLogic.getRegNumbers(),
             messages: registrationAppLogic.getMessages(),
             alertClassNames: registrationAppLogic.getAlertClassNames(),
         });
     };
 
-    const sendRegistrationNumber = (req, res) => {
+    const sendRegistrationNumber = async (req, res) => {
         const regNumberInput = req.body.regNumberInput;
-        registrationAppLogic.setRegNumber(regNumberInput);
+        await registrationAppLogic.setRegNumber(regNumberInput);
         res.redirect("/");
     };
 
