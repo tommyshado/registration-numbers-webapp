@@ -2,10 +2,11 @@
 
 const registrationApp = () => {
     let lstOfRegNums = [];
+    let townOrCustomRegNum = [];
+
     let errorMessage = "";
     let successMessage = "";
-    let townOrCustomRegNum = [];
-    let filteredRegNum = "";
+    let filteredRegNumber = "";
 
     const setRegNumber = userRegNum => {
         const lowerCaseRegNum = userRegNum.toUpperCase().trim();
@@ -45,10 +46,12 @@ const registrationApp = () => {
         };
     };
 
+
     const setTownOrCustomRegNumber = (town) => {
+        if (townOrCustomRegNum.length > 0) townOrCustomRegNum = [];
         lstOfRegNums.forEach(regNumber => {
             if (town !== 'Custom' && regNumber.startsWith(town)) {
-                filteredRegNum = town;
+                filteredRegNumber = town;
                 townOrCustomRegNum.push(regNumber);
             };
 
@@ -60,19 +63,15 @@ const registrationApp = () => {
         });
     };
 
-    const getRegNumbers = () => {
-        if (townOrCustomRegNum.length > 0) {
-            let regNumbers = [];
-            townOrCustomRegNum.forEach(regNumber => {
-                if (regNumber.startsWith(filteredRegNum)) regNumbers.push(regNumber);
+    const getTownOrCustomRegNumber = () => townOrCustomRegNum;
 
-                if (!regNumber.startsWith(filteredRegNum)) regNumbers.push(regNumber);
-            });
-            return regNumbers;
+    const getRegNumbers = () => lstOfRegNums;
 
-        } else {
-            return lstOfRegNums;
-        };
+    const lstOfRegNumbers = () => {
+        if (getTownOrCustomRegNumber().length > 0) {
+            return getTownOrCustomRegNumber().filter((regNumber) => regNumber.startsWith(filteredRegNumber) || regNumber.endsWith(filteredRegNumber));
+        }
+        else return getRegNumbers();
     };
 
     const getMessages = () => {
@@ -100,6 +99,8 @@ const registrationApp = () => {
         getRegNumbers,
         getMessages,
         setTownOrCustomRegNumber,
+        getTownOrCustomRegNumber,
+        lstOfRegNumbers,
         getAlertClassNames,
         resetApp,
     };
