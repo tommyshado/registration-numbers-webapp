@@ -63,15 +63,11 @@ const registrationApp = () => {
         });
     };
 
-    const getTownOrCustomRegNumber = () => townOrCustomRegNum;
-
-    const getRegNumbers = () => lstOfRegNums;
-
     const lstOfRegNumbers = () => {
-        if (getTownOrCustomRegNumber().length > 0) {
-            return getTownOrCustomRegNumber().filter((regNumber) => regNumber.startsWith(filteredRegNumber) || regNumber.endsWith(filteredRegNumber));
+        if (townOrCustomRegNum.length > 0) {
+            return townOrCustomRegNum.filter((regNumber) => regNumber.startsWith(filteredRegNumber) || regNumber.endsWith(filteredRegNumber));
         }
-        else return getRegNumbers();
+        else return lstOfRegNums;
     };
 
     const getMessages = () => {
@@ -96,10 +92,8 @@ const registrationApp = () => {
 
     return {
         setRegNumber,
-        getRegNumbers,
         getMessages,
         setTownOrCustomRegNumber,
-        getTownOrCustomRegNumber,
         lstOfRegNumbers,
         getAlertClassNames,
         resetApp,
