@@ -123,32 +123,4 @@ describe("registrationApp", function () {
         db.$pool.end;
     });
 
-    // // error messages, success messages
-
-    // it("should be able to return 'Please enter a registration number.'", () => {
-    //     RegNumbersApp.setRegNumber("");
-
-    //     assert.equal("Please enter a registration number.", RegNumbersApp.getMessages().errorMessage);
-    // });
-
-    // it("should be able to return 'Please enter a valid registration number. eg. CA 563-464, CJ 536, CL 7733.'", () => {
-    //     RegNumbersApp.setRegNumber("12453");
-
-    //     assert.equal("Please enter a valid registration number. eg. CA 563-464, CJ 536, CL 7733.", RegNumbersApp.getMessages().errorMessage);
-    // });
-
-    // // alert classnames from bootstrap
-
-    // it("should be able to return the class name 'alert alert-danger'", () => {
-    //     RegNumbersApp.setRegNumber("");
-
-    //     assert.equal("alert alert-danger", RegNumbersApp.getAlertClassNames());
-    // });
-
-    // it("should be able to return the class name 'alert alert-success'", () => {
-    //     RegNumbersApp.setRegNumber("CA 536");
-
-    //     assert.equal("alert alert-success", RegNumbersApp.getAlertClassNames());
-    // });
-
 });

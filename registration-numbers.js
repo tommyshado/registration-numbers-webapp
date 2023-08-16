@@ -3,7 +3,6 @@
 const registrationApp = (database) => {
     let regNumber = "";
     let regTownCode = "";
-    let errorMessage = "";
     let addFilter = false;
 
     const isValidRegNumber = (reg) => {
@@ -13,9 +12,10 @@ const registrationApp = (database) => {
     };
 
     const setRegNumber = regNum => {
-        if (isValidRegNumber(regNum)) regNumber = regNum.toUpperCase();
-        // else error message
-        else errorMessage = "Please enter a registration number. eg. CA 5464, CJ 875-356, CL 553";
+        if (isValidRegNumber(regNum)) {
+            regNumber = regNum.toUpperCase();
+            return true;
+        } else return false;
     };
 
     const setRegTownCode = townCode => {
@@ -49,10 +49,9 @@ const registrationApp = (database) => {
                 let idRecord = await isFromIdRecord(regNumber);
                 // insert into the database
                 await database.none("INSERT INTO registration_numbers.reg_numbers (reg, town_code) values ($1, $2)", [regNumber, idRecord]);
-            } else if (regNumCheck) {
-                // else error message
-                errorMessage = `${regNumber} has already been entered.`;
-            };
+                return true;
+
+            } else if (regNumCheck) return false;
         };
     };
 
@@ -91,22 +90,9 @@ const registrationApp = (database) => {
 
     };
 
-    const getMessages = () => {
-        return {
-            errorMessage,
-        };
-    };
-
-    const getAlertClassNames = () => {
-        if (getMessages().errorMessage) return "alert alert-danger";
-        // else if (getMessages().successMessage) return "alert alert-success";
-        else return "";
-    };
-
     const resetApp = async () => {
         regNumber = "";
         regTownCode = "";
-        errorMessage = "";
         addFilter = false;
         return await database.any("DELETE FROM registration_numbers.reg_numbers");
     };
@@ -119,8 +105,6 @@ const registrationApp = (database) => {
         addRegNumber,
         getRegNumbersLst,
         getFilteredRegNum,
-        getMessages,
-        getAlertClassNames,
         resetApp,
     }
 };
