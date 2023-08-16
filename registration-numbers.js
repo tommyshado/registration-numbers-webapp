@@ -20,6 +20,22 @@ const registrationApp = (database) => {
         regTownCode = townCode;
     };
 
+
+    const isFromIdRecord = async (regNum) => {
+        const getRecords = await database.any("select * from registration_numbers.towns");
+        let getIdRecord = "";
+
+        getRecords.forEach(record => {
+            const slicedRegNum = regNum.slice(0, 2);
+
+            if ((record.towns.toLowerCase()).startsWith(slicedRegNum)) {
+                getIdRecord = record.id;
+            };
+        });
+
+        return getIdRecord;
+    };
+
     const addRegNumber = async () => {
         addFilter = false;
         
@@ -28,7 +44,7 @@ const registrationApp = (database) => {
 
             if (!regNumCheck) {
                 // insert into the database
-                await database.none("INSERT INTO registration_numbers.reg_numbers (reg) values ($1)", [regNumber]);
+                await database.none("INSERT INTO registration_numbers.reg_numbers (reg, town_code) values ($1, $2)", [regNumber, isFromIdRecord(regNumber)]);
             };
             // else error message
         };
@@ -36,10 +52,10 @@ const registrationApp = (database) => {
 
     const getRegNumbersLst = async () => await database.any("SELECT reg FROM registration_numbers.reg_numbers");
 
-    const getFilteredRegNum = async () => {
-        const townCodeCol = await database.any("SELECT town_code FROM registration_numbers.reg_numbers");
-        addFilter = true;
-    };
+    // const getFilteredRegNum = async () => {
+    //     const townCodeCol = await database.any("SELECT town_code FROM registration_numbers.reg_numbers");
+    //     addFilter = true;
+    // };
 
     const resetApp = async () => {
         return await database.any("DELETE FROM registration_numbers.reg_numbers");
@@ -49,9 +65,10 @@ const registrationApp = (database) => {
         isValidRegNumber,
         setRegNumber,
         setRegTownCode,
+        isFromIdRecord,
         addRegNumber,
         getRegNumbersLst,
-        getFilteredRegNum,
+        // getFilteredRegNum,
         resetApp,
     }
 };
