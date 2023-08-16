@@ -6,10 +6,24 @@ import registrationApp from "./registration-numbers.js"
 import routes from "./routes/routes.js";
 import pgPromise from "pg-promise";
 import "dotenv/config";
+import flash from "express-flash";
+import session from "express-session";
 
 // instances
 const app = express();
 const pgp = pgPromise();
+
+
+// initialise session middleware - flash-express depends on it
+app.use(session({
+    secret : "codeXer",
+    resave: false,
+    saveUninitialized: true
+}));
+
+// initialise the flash middleware
+app.use(flash());
+
 
 
 const databaseURL = process.env.DB_LINK;

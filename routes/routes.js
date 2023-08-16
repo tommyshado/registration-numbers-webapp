@@ -1,11 +1,12 @@
 const routes = registrationAppLogic => {
 
     const homeRoute = async (req, res) => {
+        req.flash("error", registrationAppLogic.getMessages().errorMessage);
 
         res.render("index", {
             registrationNumbers: await registrationAppLogic.getRegNumbersLst(),
-            // messages: registrationAppLogic.getMessages(),
-            // alertClassNames: registrationAppLogic.getAlertClassNames(),
+            messages: req.flash("error")[0],
+            alertClassNames: registrationAppLogic.getAlertClassNames(),
         });
     };
 
