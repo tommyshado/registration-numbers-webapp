@@ -22,13 +22,13 @@ const registrationApp = (database) => {
 
 
     const isFromIdRecord = async (regNum) => {
+        // table contains records that I manually inserted
         const getRecords = await database.any("select * from registration_numbers.towns");
         let getIdRecord = "";
 
         getRecords.forEach(record => {
-            const slicedRegNum = regNum.slice(0, 2);
 
-            if ((record.towns.toLowerCase()).startsWith(slicedRegNum)) {
+            if ((regNum.toUpperCase()).startsWith(record.towns_code)) {
                 getIdRecord = record.id;
             };
         });
@@ -43,8 +43,9 @@ const registrationApp = (database) => {
             const regNumCheck = await database.oneOrNone("SELECT reg FROM registration_numbers.reg_numbers WHERE reg = $1", regNumber);
 
             if (!regNumCheck) {
+                let idRecord = await isFromIdRecord(regNumber);
                 // insert into the database
-                await database.none("INSERT INTO registration_numbers.reg_numbers (reg, town_code) values ($1, $2)", [regNumber, isFromIdRecord(regNumber)]);
+                await database.none("INSERT INTO registration_numbers.reg_numbers (reg, town_code) values ($1, $2)", [regNumber, idRecord]);
             };
             // else error message
         };
