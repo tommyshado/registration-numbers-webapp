@@ -17,6 +17,7 @@ const registrationApp = (database) => {
     };
 
     const setRegTownCode = townCode => {
+        addFilter = true;
         regTownCode = townCode;
     };
 
@@ -51,14 +52,45 @@ const registrationApp = (database) => {
         };
     };
 
-    const getRegNumbersLst = async () => await database.any("SELECT reg FROM registration_numbers.reg_numbers");
+    const getRegNumbersLst = async () => {
+        let allRegRecords = await database.any("SELECT reg FROM registration_numbers.reg_numbers");
+        let regNumber = [];
 
-    // const getFilteredRegNum = async () => {
-    //     const townCodeCol = await database.any("SELECT town_code FROM registration_numbers.reg_numbers");
-    //     addFilter = true;
-    // };
+        // when the show button is triggered
+        if (addFilter) {
+            // return getFilteredRegNum
+            const filteredReg = await getFilteredRegNum();
+            return filteredReg;
+        } else {
+            allRegRecords.forEach(record => regNumber.push(record.reg));
+    
+            return regNumber
+        };
+
+    }
+
+    const getFilteredRegNum = async () => {
+        const townCodeCol = await database.any("SELECT * FROM registration_numbers.reg_numbers");
+        let regNumbers = [];
+
+        if (regTownCode) {
+            
+            townCodeCol.forEach(codeFromTown => {
+                // Check the town_code and convert it, into a string then compare then...
+                if (codeFromTown.town_code.toString() === regTownCode) {
+                    // retrieve all the data with townCode
+                    regNumbers.push(codeFromTown.reg);
+                };
+            });
+        };
+        return regNumbers;
+
+    };
 
     const resetApp = async () => {
+        regNumber = "";
+        regTownCode = "";
+        addFilter = false;
         return await database.any("DELETE FROM registration_numbers.reg_numbers");
     };
 
@@ -69,7 +101,7 @@ const registrationApp = (database) => {
         isFromIdRecord,
         addRegNumber,
         getRegNumbersLst,
-        // getFilteredRegNum,
+        getFilteredRegNum,
         resetApp,
     }
 };
