@@ -6,9 +6,7 @@
     <main class="enterRegNum">
         <h2>Mbhaliso Numbers App</h1>
 
-        <div class="messages {{alertClassNames}}">{{#if messages.errorMessage}}{{messages.errorMessage}}{{/if}}
-                                                  {{#if messages.successMessage}}{{messages.successMessage}}{{/if}}
-                                                </div>
+        <div class="messages"></div>
 
         <div class="regContainer">
 
@@ -27,17 +25,17 @@
                 <div class="filterContainer">
 
                     <label class="">
-                        <input type="radio" name="regNumber" value="CA" class="radioButton">
+                        <input type="radio" name="regNumber" value="1" class="radioButton">
                         <strong><span class="label-body">Cape Town(ca)</span></strong>
                     </label>
 
                     <label class="">
-                        <input type="radio" name="regNumber" value="CL" class="radioButton">
+                        <input type="radio" name="regNumber" value="2" class="radioButton">
                         <strong><span class="label-body">STELLENBOSCH(cl)</span></strong>
                     </label>
 
                     <label class="">
-                        <input type="radio" name="regNumber" value="CJ" class="radioButton">
+                        <input type="radio" name="regNumber" value="3" class="radioButton">
                         <strong><span class="label-body">PAARL(cj)</span></strong>
                     </label>
 
@@ -56,7 +54,7 @@
         {{#each registrationNumbers}}
             <div class="regNumbers">
                 <ul>
-                    <li id="regNumberPlate">{{reg_number}}</li>
+                    <li id="regNumberPlate">{{reg}}</li>
                 </ul>
             </div>
         {{/each}}

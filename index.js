@@ -56,7 +56,7 @@ app.get("/", Routes.homeRoute);
 
 app.post("/sendRegNumber", Routes.sendRegistrationNumber);
 
-app.post("/reset",Routes.resetRoute);
+app.post("/reset", Routes.resetRoute);
 
 app.post("/filter", Routes.filterRoute);
 

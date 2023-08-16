@@ -1,97 +1,59 @@
 // CODE below:
 
 const registrationApp = (database) => {
-    let regNumberForTown = [];
-    let errorMessage = "";
-    let successMessage = "";
-    let filteredRegNumber = "";
+    let regNumber = "";
+    let regTownCode = "";
+    let addFilter = false;
 
-    const setRegNumber = async userRegNum => {
-        const lowerCaseRegNum = userRegNum.toUpperCase().trim();
-        let pattern = (/^C[AJL]( |)(\d{3,6}|\d{1,5}(-| )\d{1,5})$/).test(lowerCaseRegNum);
+    const isValidRegNumber = (reg) => {
+        const upperCaseReg = reg.toUpperCase();
+        const pattern = (/^C[AJL]( |)(\d{3,6}|\d{1,5}(-| )\d{1,5})$/).test(upperCaseReg);
+        return pattern;
+    };
 
-        if (!pattern && lowerCaseRegNum) {
-            // error message
-            errorMessage = "Please enter a valid registration number. eg. CA 563-464, CJ 536, CL 7733.";
-            // success message
-            successMessage = "";
+    const setRegNumber = regNum => {
+        if (isValidRegNumber(regNum)) regNumber = regNum;
+        // else error message
+    };
 
-        } else if (!lowerCaseRegNum) {
-            errorMessage = "Please enter a registration number.";
-            // success message
-            successMessage = "";
+    const setRegTownCode = townCode => {
+        regTownCode = townCode;
+    };
 
-        } else if (pattern) {
+    const addRegNumber = async () => {
+        addFilter = false;
+        
+        if (regNumber) {
+            const regNumCheck = await database.oneOrNone("SELECT reg FROM registration_numbers.reg_numbers WHERE reg = $1", regNumber);
 
-            if (await database.oneOrNone("SELECT reg_number FROM registration_numbers.user_reg_number WHERE reg_number = $1", lowerCaseRegNum)) {
-                // error message
-                errorMessage = `${lowerCaseRegNum} has already been entered.`;
-                // success message
-                successMessage = "";
-
-                return;
-
-            } else if (!await database.oneOrNone("SELECT reg_number FROM registration_numbers.user_reg_number WHERE reg_number = $1", lowerCaseRegNum)) {
-                // case where the registration number appears for the first time
-
-                await database.none("INSERT INTO registration_numbers.user_reg_number (reg_number) values ($1)", [lowerCaseRegNum]);
-
-                // success message
-                successMessage = "Successfully added a registration number.";
-                // set error message
-                errorMessage = "";
+            if (!regNumCheck) {
+                // insert into the database
+                await database.none("INSERT INTO registration_numbers.reg_numbers (reg) values ($1)", [regNumber]);
             };
+            // else error message
         };
     };
 
-    const setTownRegNumber = async town => {
-        const regNumberCol = await database.any("SELECT reg_number FROM registration_numbers.user_reg_number");
+    const getRegNumbersLst = async () => await database.any("SELECT reg FROM registration_numbers.reg_numbers");
 
-        if (regNumberForTown) regNumberForTown = [];
-        filteredRegNumber = town;
-        successMessage = "";
-        errorMessage = "";
-
-        regNumberCol.forEach(regNumberObj => {
-            if ((regNumberObj.reg_number).startsWith(town)) {
-                regNumberForTown.push(regNumberObj);
-            };
-        });
-    };
-
-    const getRegNumbers = async () => {
-        if (filteredRegNumber) return regNumberForTown.filter(regNumber => regNumber.reg_number.startsWith(filteredRegNumber));
-        else return await database.any("SELECT reg_number FROM registration_numbers.user_reg_number");
-    };
-
-    const getMessages = () => {
-        return {
-            errorMessage,
-            successMessage,
-        };
-    };
-
-    const getAlertClassNames = () => {
-        if (getMessages().errorMessage) return "alert alert-danger";
-        else if (getMessages().successMessage) return "alert alert-success";
-        else return "";
+    const getFilteredRegNum = async () => {
+        const townCodeCol = await database.any("SELECT town_code FROM registration_numbers.reg_numbers");
+        addFilter = true;
     };
 
     const resetApp = async () => {
-        errorMessage = "";
-        successMessage = "";
-        regNumberForTown = [];
-        await database.any("DELETE FROM registration_numbers.user_reg_number");
+        return await database.any("DELETE FROM registration_numbers.reg_numbers");
     };
 
     return {
+        isValidRegNumber,
         setRegNumber,
-        getMessages,
-        setTownRegNumber,
-        getRegNumbers,
-        getAlertClassNames,
+        setRegTownCode,
+        addRegNumber,
+        getRegNumbersLst,
+        getFilteredRegNum,
         resetApp,
-    };
+    }
 };
 
 export default registrationApp;

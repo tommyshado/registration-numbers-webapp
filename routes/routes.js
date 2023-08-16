@@ -1,22 +1,26 @@
 const routes = registrationAppLogic => {
 
     const homeRoute = async (req, res) => {
+
         res.render("index", {
-            registrationNumbers: await registrationAppLogic.getRegNumbers(),
-            messages: registrationAppLogic.getMessages(),
-            alertClassNames: registrationAppLogic.getAlertClassNames(),
+            registrationNumbers: await registrationAppLogic.getRegNumbersLst(),
+            // messages: registrationAppLogic.getMessages(),
+            // alertClassNames: registrationAppLogic.getAlertClassNames(),
         });
     };
 
     const sendRegistrationNumber = async (req, res) => {
         const regNumberInput = req.body.regNumberInput;
-        await registrationAppLogic.setRegNumber(regNumberInput);
+
+        registrationAppLogic.setRegNumber(regNumberInput);
+        await registrationAppLogic.addRegNumber();
+
         res.redirect("/");
     };
 
     const filterRoute = (req, res) => {
-        const townOrCustomRegNum = req.body.regNumber;
-        registrationAppLogic.setTownRegNumber(townOrCustomRegNum);
+        const townCode = req.body.regNumber;
+        registrationAppLogic.setRegTownCode(townCode);
         res.redirect("/");
     };
 
