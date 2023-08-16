@@ -6,7 +6,7 @@ const registrationApp = (database) => {
     let addFilter = false;
 
     const isValidRegNumber = (reg) => {
-        const upperCaseReg = reg.toUpperCase();
+        const upperCaseReg = reg.toUpperCase().trim();
         const pattern = (/^C[AJL]( |)(\d{3,6}|\d{1,5}(-| )\d{1,5})$/).test(upperCaseReg);
         return pattern;
     };
