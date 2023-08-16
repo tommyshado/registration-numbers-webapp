@@ -119,6 +119,10 @@ describe("registrationApp", function () {
         
     });
 
+    after(() => {
+        db.$pool.end;
+    });
+
     // // error messages, success messages
 
     // it("should be able to return 'Please enter a registration number.'", () => {
