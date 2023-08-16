@@ -13,7 +13,7 @@ const registrationApp = (database) => {
     };
 
     const setRegNumber = regNum => {
-        if (isValidRegNumber(regNum)) regNumber = regNum;
+        if (isValidRegNumber(regNum)) regNumber = regNum.toUpperCase();
         // else error message
         else errorMessage = "Please enter a registration number. eg. CA 5464, CJ 875-356, CL 553";
     };
@@ -31,7 +31,7 @@ const registrationApp = (database) => {
 
         getRecords.forEach(record => {
 
-            if ((regNum.toUpperCase()).startsWith(record.towns_code)) {
+            if ((regNum).startsWith(record.towns_code)) {
                 getIdRecord = record.id;
             };
         });
