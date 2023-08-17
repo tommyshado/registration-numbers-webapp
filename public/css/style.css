@@ -51,6 +51,13 @@ nav {
     text-align: center;
 }
 
+.regNumbers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-content: space-evenly;
+}
+
 #regNumberPlate {
     list-style-type: none;
     border-radius: 1rem;
