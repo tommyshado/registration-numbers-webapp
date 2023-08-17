@@ -1,6 +1,7 @@
 :root {
     --main-radius:5px;
     --main-padding:5px;
+    --top-padding: 2.3rem;
     --main-margin:2.5px;
 }
 
@@ -24,8 +25,9 @@
     font-family: 'Lugrasimo', cursive;
     font-family: 'Roboto', sans-serif;
     font-weight: 800;
+    font-weight: bold;
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 16px;
     text-align: center;
 }
 
@@ -36,11 +38,34 @@ nav {
     padding-top: var(--main-padding);
 }
 
+.messages {
+    padding-top: var(--top-padding);
+    margin: var(--main-margin);
+}
+
 .enterRegNum {
     /* background-color: #00A8E8; */
     grid-area: enterRegNum;
     border-radius: var(--main-radius);
     padding-top: var(--main-padding);
+}
+
+.inputContainer {
+    padding-top: var(--top-padding);
+    margin: var(--main-margin);
+}
+
+#resetButton {
+    padding-top: var(--top-padding);
+}
+
+.filterContainer {
+    padding-top: var(--top-padding);
+    margin: var(--main-margin);
+}
+
+.radioContainer {
+    padding-left: var(--top-padding);
 }
 
 .displayRegNum {

@@ -11,30 +11,34 @@
         <div class="regContainer">
 
             <form action="/sendRegNumber" method="post">
-                <label for="regNumberInput">Enter registration number:</label>
-                <input type="text" name="regNumberInput" id="regNum">
-                <button type="submit" id="addButton">Add</button>
+                <div class="inputContainer">
+                    <label for="regNumberInput">Enter registration number:</label>
+                    <input type="text" name="regNumberInput" id="regNum" placeholder="Enter a registration number">
+                    <button type="submit" id="addButton">Add</button>
+                </div>
             </form>
 
             <form action="/reset" method="post">
-                <button type="submit" id="resetButton" onclick="(resetOnClick())">Reset</button>
+                <div id="resetButton">
+                    <button type="submit" onclick="(resetOnClick())">Reset</button>
+                </div>
             </form>
 
             <form action="/filter" method="post">
 
                 <div class="filterContainer">
 
-                    <label class="">
+                    <label class="radioContainer">
                         <input type="radio" name="regNumber" value="1" class="radioButton">
                         <strong><span class="label-body">Cape Town(ca)</span></strong>
                     </label>
 
-                    <label class="">
+                    <label class="radioContainer">
                         <input type="radio" name="regNumber" value="2" class="radioButton">
                         <strong><span class="label-body">STELLENBOSCH(cl)</span></strong>
                     </label>
 
-                    <label class="">
+                    <label class="radioContainer">
                         <input type="radio" name="regNumber" value="3" class="radioButton">
                         <strong><span class="label-body">PAARL(cj)</span></strong>
                     </label>
