@@ -1,15 +1,24 @@
 :root {
     --main-radius:5px;
     --main-padding:5px;
-    --top-padding: 2.3rem;
+    --other-padding: 2rem;
     --main-margin:2.5px;
+    --font-size:1.3em;
+
+    /* color scheme */
+    --main-container: #212529;
+    --nav-bar: #6C757D;
+    --text-color: #F8F9FA;
+    --reg-plate: #6C757D;
+    --other: #495057;
+    --footer: #343A40;
 }
 
 .container {
     display: grid;
     height: 100vh;
 
-    background-color: #E9ECEF;
+    background-color: var(--main-container);
 
     /* page contains 2 columns */
     grid-template-columns: 1fr 1fr;
@@ -24,6 +33,7 @@
     grid-gap: 0.2rem;
     font-family: 'Lugrasimo', cursive;
     font-family: 'Roboto', sans-serif;
+    color: var(--text-color);
     font-weight: 800;
     font-weight: bold;
     text-transform: uppercase;
@@ -32,14 +42,14 @@
 }
 
 nav {
-    background-color: #6C757D;
+    background-color: var(--nav-bar);
     grid-area: nav;
     border-radius: var(--main-radius);
     padding-top: var(--main-padding);
 }
 
 .messages {
-    padding-top: var(--top-padding);
+    padding-top: var(--other-padding);
     margin: var(--main-margin);
 }
 
@@ -51,25 +61,52 @@ nav {
 }
 
 .inputContainer {
-    padding-top: var(--top-padding);
+    padding-top: var(--other-padding);
     margin: var(--main-margin);
 }
 
+label {
+    font-size: var(--font-size);
+}
+
+#buttons {
+    padding-left: var(--other-padding);
+}
+
+.allButtons {
+    background-color: var(--other);
+    color: var(--text-color);
+    border: 2px solid var(--text-color);
+    border-radius: var(--main-radius);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.allButtons:hover {
+    transform: scale(1.1);
+}
+
 #resetButton {
-    padding-top: var(--top-padding);
+    padding-top: var(--other-padding);
 }
 
 .filterContainer {
-    padding-top: var(--top-padding);
+    padding-top: var(--other-padding);
     margin: var(--main-margin);
 }
 
 .radioContainer {
-    padding-left: var(--top-padding);
+    padding-left: var(--other-padding);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.radioContainer:hover {
+    transform: scale(1.1);
 }
 
 .displayRegNum {
-    background-color: #ADB5BD;
+    background-color: var(--other);
     grid-area: displayRegNum;
     border-radius: var(--main-radius);
     padding-top: var(--main-padding);
@@ -86,15 +123,16 @@ nav {
 #regNumberPlate {
     list-style-type: none;
     border-radius: 1rem;
-    padding: 2em;
-    margin: 2em;
-    background-color: #6C757D;
-    border: 2px solid #E9ECEF;
-    width: 25%;
+    padding: var(--main-padding);
+    margin: 1em;
+    background-color: var(--reg-plate);
+    border: 2px solid var(--text-color);
+    width: 15%;
+    height: auto;
 }
 
 footer {
-    background-color: #6C757D;
+    background-color: var(--footer);
     grid-area: footer;
     border-radius: var(--main-radius);
     padding-top: var(--main-padding);

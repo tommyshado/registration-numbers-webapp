@@ -23,13 +23,14 @@ const routes = registrationAppLogic => {
         const townCode = req.body.regNumber;
         const filteredLst = await registrationAppLogic.getRegNumbersLst();
         registrationAppLogic.setRegTownCode(townCode);
-        filteredLst ? req.flash("info", "Successfully filtered for town.") : req.flash("Info", "There are not registration numbers for selected towns.");
+        filteredLst ? req.flash("info", "Successfully filtered for town.") : req.flash("Info", "There are no registration numbers for selected towns.");
         res.redirect("/");
     };
 
     const resetRoute = async (req, res) => {
-        await registrationAppLogic.resetApp();
-        req.flash("info", "Data has been successfully deleted.");
+        const setToDefualt = await registrationAppLogic.resetApp();
+
+        setToDefualt ? req.flash("info", "Data has been successfully deleted.") : req.flash("info", "Request to delete has been successfully cancelled.");
         res.redirect("/");
     };
 

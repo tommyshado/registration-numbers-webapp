@@ -14,13 +14,17 @@
                 <div class="inputContainer">
                     <label for="regNumberInput">Enter registration number:</label>
                     <input type="text" name="regNumberInput" id="regNum" placeholder="Enter a registration number">
-                    <button type="submit" id="addButton">Add</button>
+                    <span id="buttons">
+                        <button class="allButtons" type="submit" id="addButton">Add</button>
+                    </span>
                 </div>
             </form>
 
             <form action="/reset" method="post">
                 <div id="resetButton">
-                    <button type="submit" onclick="(resetOnClick())">Reset</button>
+                    <span>
+                        <button class="allButtons" type="submit" onclick="(resetOnClick())">Reset</button>
+                    </span>
                 </div>
             </form>
 
@@ -34,16 +38,18 @@
                     </label>
 
                     <label class="radioContainer">
-                        <input type="radio" name="regNumber" value="2" class="radioButton">
+                        <input type="radio" name="regNumber" value="3" class="radioButton">
                         <strong><span class="label-body">STELLENBOSCH(cl)</span></strong>
                     </label>
 
                     <label class="radioContainer">
-                        <input type="radio" name="regNumber" value="3" class="radioButton">
+                        <input type="radio" name="regNumber" value="2" class="radioButton">
                         <strong><span class="label-body">PAARL(cj)</span></strong>
                     </label>
 
-                    <button type="submit" id="showButton">Show</button>
+                    <span id="buttons">
+                        <button class="allButtons" type="submit" id="showButton">Show</button>
+                    </span>
                 </div>
 
             </form>
