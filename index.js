@@ -8,7 +8,6 @@ import pgPromise from "pg-promise";
 import "dotenv/config";
 import flash from "express-flash";
 import session from "express-session";
-import { MemoryStore } from "express-session";
 
 // instances
 const app = express();
@@ -17,13 +16,10 @@ const pgp = pgPromise();
 
 // initialise session middleware - flash-express depends on it
 app.use(session({
-    cookie: { maxAge: 86400000 },
-    store: new MemoryStore({
-      checkPeriod: 86400000 // prune expired entries every 24h
-    }),
+    secret : "codeXer",
     resave: false,
-    secret: 'keyboard cat'
-}))
+    saveUninitialized: true
+}));
 
 // initialise the flash middleware
 app.use(flash());
