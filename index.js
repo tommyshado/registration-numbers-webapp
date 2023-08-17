@@ -8,7 +8,7 @@ import pgPromise from "pg-promise";
 import "dotenv/config";
 import flash from "express-flash";
 import session from "express-session";
-import MemoryStore from "express-session";
+import { MemoryStore } from "express-session";
 
 // instances
 const app = express();
