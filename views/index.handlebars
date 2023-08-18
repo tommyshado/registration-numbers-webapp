@@ -6,7 +6,9 @@
     <main class="enterRegNum">
         <h2>Mbhaliso Mangama App</h1>
 
-        <div class="messages">{{messages}}</div>
+        {{#if messages}}
+            <div class="messages">{{messages}}</div>
+        {{/if}}
 
         <div class="regContainer">
 
@@ -16,14 +18,6 @@
                     <input type="text" name="regNumberInput" id="regNum" placeholder="Enter a registration number">
                     <span id="buttons">
                         <button class="allButtons" type="submit" id="addButton">Add</button>
-                    </span>
-                </div>
-            </form>
-
-            <form action="/reset" method="post">
-                <div id="resetButton">
-                    <span>
-                        <button class="allButtons" type="submit" onclick="return resetOnClick()">Reset</button>
                     </span>
                 </div>
             </form>
@@ -53,7 +47,15 @@
                 </div>
 
             </form>
-            
+
+             <form action="/reset" method="post">
+                <div id="resetButton">
+                    <span>
+                        <button class="allButtons" type="submit" onclick="return resetOnClick()">Reset</button>
+                    </span>
+                </div>
+            </form> 
+  
         </div>
 
     </main>
