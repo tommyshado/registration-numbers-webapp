@@ -73,21 +73,10 @@ const registrationApp = (database) => {
     };
 
     const getFilteredRegNum = async () => {
-        const townCodeCol = await database.any("SELECT * FROM registration_numbers.reg_numbers");
-        let regNumbers = [];
-
-        if (regTownCode) {
-            
-            townCodeCol.forEach(codeFromTown => {
-                // Check the town_code and convert it, into a string then compare then...
-                if (codeFromTown.town_code.toString() === regTownCode) {
-                    // retrieve all the data with townCode
-                    regNumbers.push(codeFromTown.reg);
-                };
-            });
-        };
-        return regNumbers;
-
+        const getFilteredTown = await database.any(`SELECT reg FROM registration_numbers.reg_numbers WHERE town_code = ${regTownCode}`);
+        let filteredTown = [];
+        getFilteredTown.forEach(town => filteredTown.push(town.reg));
+        return filteredTown;
     };
 
     const resetApp = async () => {

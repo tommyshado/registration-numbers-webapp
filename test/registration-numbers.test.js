@@ -2,7 +2,7 @@
 
 // modules import
 import assert from "assert";
-import registrationApp from "../registration-numbers.js";
+import registrationApp from "../services/registration-numbers.js";
 import pgPromise from "pg-promise";
 import "dotenv/config";
 
