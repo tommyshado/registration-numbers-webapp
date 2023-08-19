@@ -21,9 +21,15 @@ const routes = registrationAppLogic => {
 
     const filterRoute = async (req, res) => {
         const townCode = req.body.regNumber;
-        const filteredLst = await registrationAppLogic.getRegNumbersLst();
         registrationAppLogic.setRegTownCode(townCode);
-        filteredLst ? req.flash("info", "Successfully filtered for town.") : req.flash("Info", "There are no registration numbers for selected towns.");
+        const filteredLst = await registrationAppLogic.getFilteredRegNum();
+
+        if (filteredLst.length > 0) {
+            req.flash("info", "Successfully filtered for town.");
+        }else if (filteredLst.length === 0) {
+            req.flash("info", "There are no registration numbers for selected town.");
+        };
+
         res.redirect("/");
     };
 

@@ -73,10 +73,12 @@ const registrationApp = (database) => {
     };
 
     const getFilteredRegNum = async () => {
-        const getFilteredTown = await database.any(`SELECT reg FROM registration_numbers.reg_numbers WHERE town_code = ${regTownCode}`);
-        let filteredTown = [];
-        getFilteredTown.forEach(town => filteredTown.push(town.reg));
-        return filteredTown;
+        if (addFilter) {
+            const getFilteredTown = await database.any(`SELECT reg FROM registration_numbers.reg_numbers WHERE town_code = ${regTownCode}`);
+            let filteredTown = [];
+            getFilteredTown.forEach(town => filteredTown.push(town.reg));
+            return filteredTown;
+        };
     };
 
     const resetApp = async () => {
