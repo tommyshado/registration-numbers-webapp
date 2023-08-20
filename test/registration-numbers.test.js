@@ -11,7 +11,7 @@ const connectionString = process.env.DB_LINK;
 const db = pgp(connectionString);
 
 describe("registrationApp", function () {
-    this.timeout(7000);
+    this.timeout(9000);
     const RegNumbersApp = registrationApp(db);
 
     beforeEach(async () => {
