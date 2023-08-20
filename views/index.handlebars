@@ -6,8 +6,11 @@
     <main class="enterRegNum">
         <h2>Mbhaliso Mangama App</h1>
 
-        {{#if messages}}
-            <div class="messages">{{messages}}</div>
+        {{#if errorMessages}}
+            <div class="messages alert alert-danger">{{errorMessages}}</div>
+        {{/if}}
+        {{#if successMessages}}
+            <div class="messages alert alert-success">{{successMessages}}</div>
         {{/if}}
 
         <div class="regContainer">

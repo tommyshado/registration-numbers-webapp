@@ -4,7 +4,8 @@ const routes = registrationAppLogic => {
 
         res.render("index", {
             registrationNumbers: await registrationAppLogic.getRegNumbersLst(),
-            messages: req.flash("info")[0],
+            errorMessages: req.flash("error")[0],
+            successMessages: req.flash("success")[0]
         });
     };
 
@@ -13,8 +14,8 @@ const routes = registrationAppLogic => {
         const setRegNumber = registrationAppLogic.setRegNumber(regNumberInput);
         const addRegNumber = await registrationAppLogic.addRegNumber();
         
-        !setRegNumber ? req.flash("info", "Please enter a registration number. e.g CA 425-262, CJ 748, Cl 7889") : setRegNumber;
-        addRegNumber ? req.flash("info", "Successfully added a registration number.") : req.flash("info", "Registration number has already been added.");
+        !setRegNumber ? req.flash("error", "Please enter a registration number. e.g CA 425-262, CJ 748, Cl 7889") : setRegNumber;
+        addRegNumber ? req.flash("success", "Successfully added a registration number.") : req.flash("error", "Registration number has already been added.");
 
         res.redirect("/");
     };
@@ -25,9 +26,9 @@ const routes = registrationAppLogic => {
         const filteredLst = await registrationAppLogic.getFilteredRegNum();
 
         if (filteredLst.length > 0) {
-            req.flash("info", "Successfully filtered for town.");
+            req.flash("success", "Successfully filtered for town.");
         }else if (filteredLst.length === 0) {
-            req.flash("info", "There are no registration numbers for selected town.");
+            req.flash("error", "There are no registration numbers for selected town.");
         };
 
         res.redirect("/");
@@ -36,7 +37,7 @@ const routes = registrationAppLogic => {
     const resetRoute = async (req, res) => {
         const setToDefualt = await registrationAppLogic.resetApp();
 
-        setToDefualt ? req.flash("info", "Data has been successfully deleted.") : req.flash("info", "Request to delete has been successfully cancelled.");
+        setToDefualt ? req.flash("success", "Data has been successfully deleted.") : req.flash("success", "Request to delete has been successfully cancelled.");
         res.redirect("/");
     };
 
