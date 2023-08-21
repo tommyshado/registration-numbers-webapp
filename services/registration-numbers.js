@@ -73,12 +73,12 @@ const registrationApp = (database) => {
     };
 
     const getFilteredRegNum = async () => {
-        if (addFilter) {
+        if (addFilter && regTownCode) {
             const getFilteredTown = await database.any(`SELECT reg FROM registration_numbers.reg_numbers WHERE town_code = ${regTownCode}`);
             let filteredTown = [];
             getFilteredTown.forEach(town => filteredTown.push(town.reg));
             return filteredTown;
-        };
+        } else return [];
     };
 
     const resetApp = async () => {
