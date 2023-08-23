@@ -23,8 +23,7 @@ const registrationApp = (database) => {
         regTownCode = townCode;
     };
 
-
-    const isFromIdRecord = async (regNum) => {
+    const idRecordFromTown = async (regNum) => {
         // table contains records that I manually inserted
         const getRecords = await database.any("select * from registration_numbers.towns");
         let getIdRecord = "";
@@ -46,7 +45,7 @@ const registrationApp = (database) => {
             const regNumCheck = await database.oneOrNone("SELECT reg FROM registration_numbers.reg_numbers WHERE reg = $1", regNumber);
 
             if (!regNumCheck) {
-                let idRecord = await isFromIdRecord(regNumber);
+                let idRecord = await idRecordFromTown(regNumber);
                 // insert into the database
                 await database.none("INSERT INTO registration_numbers.reg_numbers (reg, town_code) values ($1, $2)", [regNumber, idRecord]);
                 return true;
@@ -57,17 +56,13 @@ const registrationApp = (database) => {
 
     const getRegNumbersLst = async () => {
         let allRegRecords = await database.any("SELECT reg FROM registration_numbers.reg_numbers");
-        let regNumber = [];
-
         // when the show button is triggered
         if (addFilter) {
             // return getFilteredRegNum
             const filteredReg = await getFilteredRegNum();
             return filteredReg;
         } else {
-            allRegRecords.forEach(record => regNumber.push(record.reg));
-    
-            return regNumber;
+            return allRegRecords.map(record => record.reg);
         };
 
     };
@@ -75,9 +70,7 @@ const registrationApp = (database) => {
     const getFilteredRegNum = async () => {
         if (addFilter && regTownCode) {
             const getFilteredTown = await database.any(`SELECT reg FROM registration_numbers.reg_numbers WHERE town_code = ${regTownCode}`);
-            let filteredTown = [];
-            getFilteredTown.forEach(town => filteredTown.push(town.reg));
-            return filteredTown;
+            return getFilteredTown.map(town => town.reg);
         } else return [];
     };
 
@@ -92,7 +85,7 @@ const registrationApp = (database) => {
         isValidRegNumber,
         setRegNumber,
         setRegTownCode,
-        isFromIdRecord,
+        idRecordFromTown,
         addRegNumber,
         getRegNumbersLst,
         getFilteredRegNum,
