@@ -7,9 +7,8 @@ const registrationApp = (database) => {
     };
 
     const regNumbers = async (townCode) => {
-        if (!townCode) return await database.manyOrNone(`select * from reg_numbers`);
 
-        else if (townCode === "all") return await database.manyOrNone(`select * from reg_numbers`);
+        if (townCode === "all" || !townCode) return await database.manyOrNone(`select * from reg_numbers`);
 
         else return await database.manyOrNone(`select * from reg_numbers where town_code = $1`, [townCode]);
     };
