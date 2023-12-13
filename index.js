@@ -66,13 +66,13 @@ app.set("views", "./views");
 // instance
 const Routes = routes(registrationsApp);
 
-app.get("/", Routes.homeRoute);
+app.get("/", Routes.index);
 
-app.post("/sendRegNumber", Routes.sendRegistrationNumber);
+app.post("/addRegNumber", Routes.addRegNumber);
 
-app.post("/reset", Routes.resetRoute);
+app.post("/filter", Routes.filter);
 
-app.post("/filter", Routes.filterRoute);
+app.post("/reset", Routes.clearRegNumbers);
 
 const PORT = process.env.PORT || 3007;
 

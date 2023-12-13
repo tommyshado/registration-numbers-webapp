@@ -6,19 +6,19 @@
     <main class="enterRegNum">
         <h2>Mbhaliso Mangama App</h1>
 
-        {{#if errorMessages}}
-            <div class="messages alert alert-danger">{{errorMessages}}</div>
+        {{#if messages.error}}
+            <div class="messages alert alert-danger">{{messages.error}}</div>
         {{/if}}
-        {{#if successMessages}}
-            <div class="messages alert alert-success">{{successMessages}}</div>
+        {{#if messages.success}}
+            <div class="messages alert alert-success">{{messages.success}}</div>
         {{/if}}
 
         <div class="regContainer">
 
-            <form action="/sendRegNumber" method="post">
+            <form action="/addRegNumber" method="post">
                 <div class="inputContainer">
                     <label for="regNumberInput">Enter registration number:</label>
-                    <input type="text" name="regNumberInput" id="regNum" placeholder="Enter a registration number">
+                    <input type="text" name="reg" id="regNum" placeholder="Enter a registration number">
                     <span id="buttons">
                         <button class="allButtons" type="submit" id="addButton">Add</button>
                     </span>
@@ -29,19 +29,16 @@
 
                 <div class="filterContainer">
 
-                    <label class="radioContainer">
-                        <input type="radio" name="regNumber" value="1" class="radioButton">
-                        <strong><span class="label-body">Cape Town(ca)</span></strong>
-                    </label>
+                    {{#each towns}}
+                        <label class="radioContainer">
+                            <input type="radio" name="regNumber" value="{{town_code}}" class="radioButton">
+                            <strong><span class="label-body">{{town}} ({{town_code}})</span></strong>
+                        </label>
+                    {{/each}}
 
                     <label class="radioContainer">
-                        <input type="radio" name="regNumber" value="3" class="radioButton">
-                        <strong><span class="label-body">STELLENBOSCH(cl)</span></strong>
-                    </label>
-
-                    <label class="radioContainer">
-                        <input type="radio" name="regNumber" value="2" class="radioButton">
-                        <strong><span class="label-body">PAARL(cj)</span></strong>
+                        <input type="radio" name="regNumber" value="all" class="radioButton">
+                        <strong><span class="label-body">All</span></strong>
                     </label>
 
                     <span id="buttons">
@@ -67,8 +64,8 @@
         <h3>Entered Registration Numbers:</h2>
 
         <div class="regNumbers">
-        {{#each registrationNumbers}}
-                <li id="regNumberPlate">{{this}}</li>
+        {{#each regNumbers}}
+                <li id="regNumberPlate">{{reg_number}}</li>
         {{/each}}
         </div>
 

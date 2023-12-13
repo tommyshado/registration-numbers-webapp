@@ -7,7 +7,9 @@ import pgPromise from "pg-promise";
 import "dotenv/config";
 
 const pgp = pgPromise();
-const connectionString = process.env.DB_LINK;
+const connectionString =
+    process.env.DB_LINK_TEST ||
+    "postgres://qxhcpkky:yzmf97rw-WIK2eebq9h0jUKnaAzsEz4N@cornelius.db.elephantsql.com/qxhcpkky";
 const db = pgp(connectionString);
 
 describe("registrationApp", function () {
@@ -16,43 +18,49 @@ describe("registrationApp", function () {
 
     beforeEach(async () => {
         try {
-            await db.none("TRUNCATE TABLE registration_numbers.reg_numbers RESTART IDENTITY CASCADE");
+            await db.none("truncate table reg_numbers restart identity cascade");
         } catch (error) {
             console.log(error);
             throw error;
         }
     });
 
-    // setting and getting registration numbers
-
-    it("should be able to set and get valid registration number", async () => {
+    it("should be able to retreive all available towns", async () => {
         try {
+            const towns = await RegNumbersApp.towns();
 
-            // set registration number
-            RegNumbersApp.setRegNumber("CA 662");
-            // add a reg number to the reg numbers list
-            await RegNumbersApp.addRegNumber();
-
-            assert.deepStrictEqual(["CA 662"], await RegNumbersApp.getRegNumbersLst());
+            assert.deepEqual(
+                [
+                    {
+                        id: 1,
+                        town: "Cape Town",
+                        town_code: "CA",
+                    },
+                    {
+                        id: 2,
+                        town: "Stellenbosch",
+                        town_code: "CL",
+                    },
+                    {
+                        id: 3,
+                        town: "paarl",
+                        town_code: "CJ",
+                    },
+                ],
+                towns
+            );
         } catch (error) {
             console.log(error);
             throw error;
         }
     });
 
-    it("should be able to set the same registration number twice and get one registration number", async () => {
+    it("should be able to add a registration number", async () => {
         try {
-            // set registration number
-            RegNumbersApp.setRegNumber("cj 552-232");
-            // adding reg number to the reg numbers list
-            await RegNumbersApp.addRegNumber();
+            await RegNumbersApp.addRegNumber("ca 756");
+            const regNumbers = await RegNumbersApp.regNumbers();
 
-            // set registration number
-            RegNumbersApp.setRegNumber("cJ 552-232");
-            // adding reg number to the reg numbers list
-            await RegNumbersApp.addRegNumber();
-
-            assert.deepStrictEqual(["CJ 552-232"], await RegNumbersApp.getRegNumbersLst());
+            assert.equal(1, regNumbers.length);
 
         } catch (error) {
             console.log(error);
@@ -60,22 +68,21 @@ describe("registrationApp", function () {
         };
     });
 
-    // filtering registration numbers
-
     it("should be able to filter for CA registration numbers", async () => {
         try {
 
-            RegNumbersApp.setRegNumber("ca 662");
-            await RegNumbersApp.addRegNumber();
+            await RegNumbersApp.addRegNumber("ca 756");
+            await RegNumbersApp.addRegNumber("cj 746");
+            await RegNumbersApp.addRegNumber("cl 553");
 
-            RegNumbersApp.setRegNumber("cl 553");
-            await RegNumbersApp.addRegNumber();
+            const regNumbersLst = await RegNumbersApp.regNumbers();
 
-            // set CA town code
-            RegNumbersApp.setRegTownCode("1");
+            assert.equal(3, regNumbersLst.length)
 
-            assert.deepStrictEqual(["CA 662"], await RegNumbersApp.getRegNumbersLst());
-            
+            const regNumbers = await RegNumbersApp.regNumbers("CA");       
+
+            assert.equal(1, regNumbers.length);
+
         } catch (error) {
             console.log(error);
             throw error;
@@ -85,14 +92,17 @@ describe("registrationApp", function () {
     it("should be able to filter for CJ registration numbers", async () => {
         try {
 
-            RegNumbersApp.setRegNumber("cj 223");
-            await RegNumbersApp.addRegNumber();
-            RegNumbersApp.setRegNumber("ca 039-536");
-            await RegNumbersApp.addRegNumber();
+            await RegNumbersApp.addRegNumber("ca 756");
+            await RegNumbersApp.addRegNumber("cj 746");
+            await RegNumbersApp.addRegNumber("cl 553");
 
-            RegNumbersApp.setRegTownCode("2");
+            const regNumbersLst = await RegNumbersApp.regNumbers();
 
-            assert.deepStrictEqual(["CJ 223"], await RegNumbersApp.getRegNumbersLst());
+            assert.equal(3, regNumbersLst.length)
+
+            const regNumbers = await RegNumbersApp.regNumbers("CJ");       
+
+            assert.equal(1, regNumbers.length);
 
         } catch (error) {
             console.log(error);
@@ -100,27 +110,29 @@ describe("registrationApp", function () {
         }
     });
 
-    it("should return an empty array when filtering for town that contains no registration numbers", async () => {
+    it("should be able to filter for all registration numbers", async () => {
         try {
 
-            RegNumbersApp.setRegNumber("ca 662");
-            await RegNumbersApp.addRegNumber();
-            RegNumbersApp.setRegNumber("cl 553");
-            await RegNumbersApp.addRegNumber();
-            
-            RegNumbersApp.setRegTownCode("2");
+            await RegNumbersApp.addRegNumber("ca 756");
+            await RegNumbersApp.addRegNumber("cj 746");
+            await RegNumbersApp.addRegNumber("cl 553");
 
-            assert.deepStrictEqual([], await RegNumbersApp.getRegNumbersLst());
+            const regNumbersLst = await RegNumbersApp.regNumbers();
+
+            assert.equal(3, regNumbersLst.length)
+
+            const regNumbers = await RegNumbersApp.regNumbers("all");       
+
+            assert.equal(3, regNumbers.length);
 
         } catch (error) {
             console.log(error);
             throw error;
         }
-        
+
     });
 
     after(() => {
         db.$pool.end;
     });
-
 });

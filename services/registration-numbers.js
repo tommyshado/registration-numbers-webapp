@@ -1,95 +1,49 @@
 // CODE below:
 
 const registrationApp = (database) => {
-    let regNumber = "";
-    let regTownCode = "";
-    let addFilter = false;
 
-    const isValidRegNumber = (reg) => {
-        const upperCaseReg = reg.toUpperCase().trim();
-        const pattern = (/^C[AJL]( |)(\d{3,6}|\d{1,5}(-| )\d{1,5})$/).test(upperCaseReg);
-        return pattern;
+    const towns = async () => {
+        return await database.manyOrNone(`select * from towns`);
     };
 
-    const setRegNumber = regNum => {
-        if (isValidRegNumber(regNum)) {
-            regNumber = regNum.toUpperCase();
-            return true;
-        } else return false;
+    const regNumbers = async (townCode) => {
+        if (!townCode) return await database.manyOrNone(`select * from reg_numbers`);
+
+        else if (townCode === "all") return await database.manyOrNone(`select * from reg_numbers`);
+
+        else return await database.manyOrNone(`select * from reg_numbers where town_code = $1`, [townCode]);
     };
 
-    const setRegTownCode = townCode => {
-        addFilter = true;
-        regTownCode = townCode;
-    };
+    const addRegNumber = async (reg_number) => {
+        const availableTowns = await towns();
 
-    const idRecordFromTown = async (regNum) => {
-        // table contains records that I manually inserted
-        const getRecords = await database.any("select * from registration_numbers.towns");
-        let getIdRecord = "";
+        const regNumbers = await database.oneOrNone(`select * from reg_numbers where reg_number = $1`, [reg_number]);
 
-        getRecords.forEach(record => {
+        if (regNumbers) {
+            return null;
+        };
 
-            if ((regNum).startsWith(record.towns_code)) {
-                getIdRecord = record.id;
+        let townCode = null;
+        availableTowns.forEach(town => {
+            const checkRegNumber = reg_number.toUpperCase().startsWith(town.town_code);
+
+            if (checkRegNumber) {
+                townCode = town.town_code
             };
         });
 
-        return getIdRecord;
+        return await database.oneOrNone(`insert into reg_numbers (reg_number, town_code) values ($1, $2) RETURNING id`, [reg_number, townCode]);
     };
 
-    const addRegNumber = async () => {
-        addFilter = false;
-        
-        if (regNumber) {
-            const regNumCheck = await database.oneOrNone("SELECT reg FROM registration_numbers.reg_numbers WHERE reg = $1", regNumber);
-
-            if (!regNumCheck) {
-                let idRecord = await idRecordFromTown(regNumber);
-                // insert into the database
-                await database.none("INSERT INTO registration_numbers.reg_numbers (reg, town_code) values ($1, $2)", [regNumber, idRecord]);
-                return true;
-
-            } else if (regNumCheck) return false;
-        };
-    };
-
-    const getRegNumbersLst = async () => {
-        let allRegRecords = await database.any("SELECT reg FROM registration_numbers.reg_numbers");
-        // when the show button is triggered
-        if (addFilter) {
-            // return getFilteredRegNum
-            const filteredReg = await getFilteredRegNum();
-            return filteredReg;
-        } else {
-            return allRegRecords.map(record => record.reg);
-        };
-
-    };
-
-    const getFilteredRegNum = async () => {
-        if (addFilter && regTownCode) {
-            const getFilteredTown = await database.any(`SELECT reg FROM registration_numbers.reg_numbers WHERE town_code = ${regTownCode}`);
-            return getFilteredTown.map(town => town.reg);
-        } else return [];
-    };
-
-    const resetApp = async () => {
-        regNumber = "";
-        regTownCode = "";
-        addFilter = false;
-        return await database.any("DELETE FROM registration_numbers.reg_numbers");
+    const clearRegNumbers = async () => {
+        return await database.any("delete from reg_numbers");
     };
 
     return {
-        isValidRegNumber,
-        setRegNumber,
-        setRegTownCode,
-        idRecordFromTown,
+        towns,
+        regNumbers,
         addRegNumber,
-        getRegNumbersLst,
-        getFilteredRegNum,
-        resetApp,
+        clearRegNumbers
     }
 };
 

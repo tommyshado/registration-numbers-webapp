@@ -1,51 +1,74 @@
-const routes = registrationAppLogic => {
+const routes = appInstance => {
 
-    const homeRoute = async (req, res) => {
+    const index = async (req, res) => {
+        const regNumbers = await appInstance.regNumbers();
+        const towns = await appInstance.towns();
 
         res.render("index", {
-            registrationNumbers: await registrationAppLogic.getRegNumbersLst(),
-            errorMessages: req.flash("error")[0],
-            successMessages: req.flash("success")[0]
+            towns: towns,
+            regNumbers: regNumbers
         });
     };
 
-    const sendRegistrationNumber = async (req, res) => {
-        const regNumberInput = req.body.regNumberInput;
-        const setRegNumber = registrationAppLogic.setRegNumber(regNumberInput);
-        const addRegNumber = await registrationAppLogic.addRegNumber();
-        
-        !setRegNumber ? req.flash("error", "Please enter a registration number. e.g CA 425-262, CJ 748, Cl 7889") : setRegNumber;
-        addRegNumber ? req.flash("success", "Successfully added a registration number.") : req.flash("error", "Registration number has already been added.");
+    const addRegNumber = async (req, res) => {
+        const { reg } = req.body;
+        const towns = await appInstance.towns();
 
-        res.redirect("/");
-    };
-
-    const filterRoute = async (req, res) => {
-        const townCode = req.body.regNumber;
-        registrationAppLogic.setRegTownCode(townCode);
-        const filteredLst = await registrationAppLogic.getFilteredRegNum();
-
-        if (filteredLst.length > 0) {
-            req.flash("success", "Successfully filtered for town.");
-        }else if (filteredLst.length === 0) {
-            req.flash("error", "There are no registration numbers for selected town.");
+        if (reg) {
+            const results = towns.some(town => {
+                return reg.toUpperCase().startsWith(town.town_code) 
+                       && (/^C[AJL]( |)(\d{3,6}|\d{1,5}(-| )\d{1,5})$/).test(reg.toUpperCase());
+            });
+    
+            if (results) {
+                const regNumber = await appInstance.addRegNumber(reg);
+    
+                if (regNumber === null) {
+                    req.flash("error", "Registration number already added.");
+                    res.redirect("/");
+                    return;
+                };
+    
+                req.flash("success", "Successfully added a registration number.")
+                res.redirect("/");
+                return;
+            };
+    
+            req.flash("error", "Please enter a registration number. e.g CA 425-262, CJ 748, Cl 7889");
+            res.redirect("/");
+            return;
         };
 
+        req.flash("error", "Please enter a registration number. e.g CA 425-262, CJ 748, Cl 7889");
         res.redirect("/");
+        return;
     };
 
-    const resetRoute = async (req, res) => {
-        const setToDefualt = await registrationAppLogic.resetApp();
+    const filter = async (req, res) => {
+        const { regNumber } = req.body;
+        const towns = await appInstance.towns();
 
-        setToDefualt ? req.flash("success", "Data has been successfully deleted.") : req.flash("success", "Request to delete has been successfully cancelled.");
+        if (regNumber) {
+            const filtered = await appInstance.regNumbers(regNumber);
+            req.flash("success", "Filtered for town.");
+            res.render("index", {
+                towns: towns,
+                regNumbers: filtered
+            });
+        };
+    };
+
+    const clearRegNumbers = async (req, res) => {
+        await appInstance.clearRegNumbers();
+        req.flash("success", "Data has been successfully deleted.")
         res.redirect("/");
     };
 
     return {
-        homeRoute,
-        sendRegistrationNumber,
-        filterRoute,
-        resetRoute,
+        index,
+        addRegNumber,
+        filter,
+        clearRegNumbers,
     };
 };
 
